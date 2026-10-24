@@ -1,0 +1,1103 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Simulador Feijoada Beneficente</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Simulador de cenários da Feijoada Beneficente 2026, Loja Ordem e Progresso nº 133.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+/* Layout: faixa do selo da Loja no topo, controles fixos de convidados e ingressos, quatro cenários lado a lado, quadro, gráficos e ajustes. */
+:root {
+  --bg: #eceff3;
+  --surface: #ffffff;
+  --surface-2: #f4f6f9;
+  --ink: #1b2231;
+  --muted: #566074;
+  --line: #d8dde5;
+  --line-strong: #b4bccb;
+  --accent: #8f1d2a;
+  --head-a: #5b111b;
+  --head-b: #1d2538;
+  --on-head: #ffffff;
+  --on-head-soft: #e4d3d6;
+  --good: #17714a;
+  --bad: #b7371c;
+  --warn-bg: #fff1c9;
+  --warn-ink: #5e4200;
+  --in-bg: #fffbea;
+  --in-line: #d9c98a;
+  --in-ink: #1f3fa8;
+  --c1: #2c5f8f;
+  --c2: #1f857a;
+  --c3: #a02634;
+  --c4: #b87a12;
+  --k-alim: #55657d;
+  --k-desc: #a3aebf;
+  --k-beb: #8a5a9e;
+  --k-buf: #2f3a4d;
+  --k-ext: #c76f3a;
+  --font-display: "Cinzel", "Trajan Pro", Georgia, serif;
+  --font-body: "Source Sans 3", "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f131a; --surface: #171c25; --surface-2: #1d2330; --ink: #e6e9f0; --muted: #97a1b4;
+    --line: #2a3140; --line-strong: #3d475a; --accent: #e27c88; --head-a: #5b111b; --head-b: #141a29;
+    --on-head: #ffffff; --on-head-soft: #dcc7cb;
+    --good: #4cc38a; --bad: #ff8a6b; --warn-bg: #3a2f10; --warn-ink: #f0d58a;
+    --in-bg: #20283a; --in-line: #4a5470; --in-ink: #a9c1ff;
+    --c1: #6aa6e0; --c2: #46c2b1; --c3: #ef7885; --c4: #e5b04a;
+    --k-alim: #7f93b0; --k-desc: #4d586c; --k-beb: #b98ccf; --k-buf: #c4cddd; --k-ext: #e79a63;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f131a; --surface: #171c25; --surface-2: #1d2330; --ink: #e6e9f0; --muted: #97a1b4;
+  --line: #2a3140; --line-strong: #3d475a; --accent: #e27c88; --head-a: #5b111b; --head-b: #141a29;
+  --on-head: #ffffff; --on-head-soft: #dcc7cb;
+  --good: #4cc38a; --bad: #ff8a6b; --warn-bg: #3a2f10; --warn-ink: #f0d58a;
+  --in-bg: #20283a; --in-line: #4a5470; --in-ink: #a9c1ff;
+  --c1: #6aa6e0; --c2: #46c2b1; --c3: #ef7885; --c4: #e5b04a;
+  --k-alim: #7f93b0; --k-desc: #4d586c; --k-beb: #b98ccf; --k-buf: #c4cddd; --k-ext: #e79a63;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.5; margin: 0;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.wrap {
+  max-width: 1240px; margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+h1, h2, h3, p { margin: 0; }
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* faixa do selo */
+.masthead { background: linear-gradient(105deg, var(--head-a), var(--head-b)); color: var(--on-head); }
+.mast-in { display: flex; align-items: center; gap: 22px; padding-block: 22px; flex-wrap: wrap; }
+.selo { width: 96px; height: 96px; border-radius: 50%; flex: none; background: #fff; box-shadow: 0 0 0 3px rgba(255,255,255,.28), 0 6px 18px rgba(0,0,0,.35); }
+.mast-txt { flex: 1 1 320px; min-width: 0; }
+.eyebrow { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--on-head-soft); }
+h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(26px, 4.2vw, 40px); line-height: 1.1; letter-spacing: .04em; margin-block: 4px 6px; text-wrap: balance; }
+.sub { color: var(--on-head-soft); max-width: 62ch; }
+.mast-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn {
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.4); color: var(--on-head); border-radius: 6px;
+  padding: 8px 14px; cursor: pointer; font-weight: 600; font-size: 14px;
+}
+.btn-ico { display: inline-flex; align-items: center; justify-content: center; width: 40px; padding: 8px 0; }
+.btn:hover { background: rgba(255,255,255,.22); }
+.btn[data-armed="1"] { background: #fff; color: #5b111b; }
+
+/* controles principais */
+.strip { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--surface); border-bottom: 1px solid var(--line-strong); box-shadow: 0 4px 14px rgba(15,20,30,.08); }
+.strip-in { display: flex; gap: 18px 26px; align-items: flex-end; flex-wrap: wrap; padding-block: 12px; }
+#pessoasBox { flex: 1 1 300px; min-width: 0; }
+#pessoasBox label, .fld label { display: block; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 4px; }
+.pess { display: flex; gap: 12px; align-items: center; }
+.pess input[type=range] { flex: 1; min-width: 0; accent-color: var(--accent); }
+.pess input[type=number] { width: 96px; font-size: 20px; font-weight: 700; }
+#stripIng { display: flex; gap: 14px; flex-wrap: wrap; flex: 2 1 420px; }
+#stripIng .fld { flex: 1 1 110px; min-width: 100px; }
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; background: currentColor; }
+.c1 .dot, th.c1 .dot { background: var(--c1); } .c2 .dot, th.c2 .dot { background: var(--c2); }
+.c3 .dot, th.c3 .dot { background: var(--c3); } .c4 .dot, th.c4 .dot { background: var(--c4); }
+
+input[type=number], input[type=text] {
+  width: 100%; min-width: 0; background: var(--in-bg); border: 1px solid var(--in-line); color: var(--in-ink); border-radius: 5px;
+  padding: 6px 8px; font-variant-numeric: tabular-nums; font-weight: 600;
+}
+input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--accent); }
+.money { display: flex; align-items: center; gap: 6px; }
+.money span { color: var(--muted); font-size: 13px; min-width: 1.6em; flex: none; }
+.readout { padding: 6px 8px; font-weight: 700; font-variant-numeric: tabular-nums; background: var(--surface-2); border-radius: 5px; }
+.readout.sm { display: inline-block; min-width: 4.5em; text-align: right; }
+.fld small { display: block; color: var(--muted); font-size: 12px; margin-top: 3px; }
+
+main { padding-block: 22px 40px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 34px; }
+main > *, .ajuste > * { min-width: 0; }
+.alerta { background: var(--warn-bg); color: var(--warn-ink); padding: 10px 14px; border-radius: 6px; font-weight: 600; }
+h2 { font-family: var(--font-display); font-size: 17px; letter-spacing: .09em; text-transform: uppercase; font-weight: 700; margin-bottom: 12px; display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+h2 small { font-family: var(--font-body); font-size: 13px; letter-spacing: 0; text-transform: none; color: var(--muted); font-weight: 400; }
+
+/* cartões dos cenários */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(255px, 1fr)); gap: 16px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px 16px 14px; display: flex; flex-direction: column; gap: 12px; min-width: 0; border-top: 4px solid var(--cc); }
+.card.c1 { --cc: var(--c1); } .card.c2 { --cc: var(--c2); } .card.c3 { --cc: var(--c3); } .card.c4 { --cc: var(--c4); }
+.card.best { box-shadow: 0 0 0 2px var(--cc), 0 8px 22px rgba(15,20,30,.14); }
+.cn { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--cc); font-weight: 700; }
+.card h3 { font-size: 18px; line-height: 1.2; margin-top: 2px; text-wrap: balance; }
+.tag { color: var(--muted); font-size: 13px; }
+.big { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.big .lbl { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; width: 100%; margin-bottom: -6px; }
+.big strong { font-size: 34px; font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.chip { background: var(--cc); color: #fff; font-size: 12px; font-weight: 700; padding: 2px 9px; border-radius: 99px; }
+.pos { color: var(--good); } .neg { color: var(--bad); }
+dl { margin: 0; display: grid; gap: 4px; }
+dl div { display: flex; justify-content: space-between; gap: 10px; border-bottom: 1px dotted var(--line); padding-bottom: 3px; }
+dt { color: var(--muted); } dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.stack { display: flex; height: 10px; border-radius: 99px; overflow: hidden; background: var(--surface-2); }
+.stack i { display: block; height: 100%; }
+.k-alim { background: var(--k-alim); } .k-desc { background: var(--k-desc); } .k-beb { background: var(--k-beb); } .k-buf { background: var(--k-buf); } .k-ext { background: var(--k-ext); }
+.beb { font-size: 13.5px; color: var(--muted); }
+.beb b { color: var(--ink); }
+.key { display: flex; gap: 6px 16px; flex-wrap: wrap; font-size: 13px; color: var(--muted); margin-top: 10px; }
+.key span { display: inline-flex; align-items: center; gap: 6px; }
+.key i { width: 12px; height: 8px; border-radius: 2px; display: inline-block; }
+
+/* tabelas */
+.tbl-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { padding: 7px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: middle; }
+thead th { background: var(--surface-2); font-size: 13px; position: relative; }
+thead th small { display: block; font-weight: 400; color: var(--muted); }
+thead th.best::after { content: "maior sobra"; display: block; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--good); }
+tbody th { font-weight: 400; }
+td.r { text-align: right; } td.c { text-align: center; color: var(--muted); } td.ck { text-align: center; }
+td.mut { color: var(--muted); }
+tr.tot th, tr.tot td { font-weight: 700; background: var(--surface-2); }
+tr.sep th, tr.grp th { background: var(--surface-2); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+th.ind { padding-left: 26px; }
+td input[type=number] { min-width: 70px; max-width: 110px; text-align: right; display: block; margin-left: auto; }
+thead th { vertical-align: bottom; }
+th.r { text-align: right; } th.cc { text-align: center; }
+#quadro thead th:not(:first-child) { text-align: right; }
+.paramGrid { align-items: start; }
+.paramGrid .fld label { min-height: 3em; display: flex; align-items: flex-end; }
+.comp { margin: 8px 0 12px; padding: 8px 10px; border-left: 3px solid var(--line-strong); background: var(--surface-2); border-radius: 0 6px 6px 0; }
+.comp dd { font-weight: 600; }
+.bebbox { background: var(--surface-2); border-radius: 6px; padding: 10px 12px 8px; }
+.bebbox h4 { margin: 0 0 6px; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+.bebbox dl div { border-bottom-color: var(--line); }
+.bebbox dl div:last-child { border-bottom: 0; }
+.bebbox .nt { color: var(--muted); font-size: 12.5px; margin-top: 6px; }
+th input[type=text] { min-width: 150px; }
+.nm { font-weight: 600; }
+.un { display: block; color: var(--muted); font-weight: 400; }
+#quadro td, #quadro th { white-space: nowrap; }
+
+/* gráficos */
+.charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.chbox { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 14px 14px 8px; min-width: 0; position: relative; }
+.chbox.wide { grid-column: 1 / -1; }
+.chbox h3 { font-size: 15px; margin-bottom: 2px; }
+.chbox p.nota { color: var(--muted); font-size: 13px; margin-bottom: 6px; }
+.ch { position: relative; }
+.ch svg { display: block; max-width: 100%; }
+.gl { stroke: var(--line); stroke-width: 1; } .gl.zero { stroke: var(--line-strong); stroke-width: 1.5; }
+.tk { fill: var(--muted); font-size: 12px; font-family: var(--font-body); }
+.ax { fill: var(--muted); font-size: 12px; font-family: var(--font-body); }
+.vl { fill: var(--ink); font-size: 11.5px; font-weight: 600; font-family: var(--font-body); }
+.sb { font-size: 12px; font-weight: 700; font-family: var(--font-body); fill: currentColor; }
+.sb.pos { fill: var(--good); } .sb.neg { fill: var(--bad); }
+.mk { stroke: var(--line-strong); stroke-width: 1.5; stroke-dasharray: 4 4; }
+.hv { stroke: var(--muted); stroke-width: 1; }
+.lg { display: flex; flex-wrap: wrap; gap: 4px 16px; list-style: none; padding: 0; margin: 0 0 6px; font-size: 13px; color: var(--muted); }
+.lg li { display: inline-flex; align-items: center; gap: 6px; }
+.lg i { width: 14px; height: 4px; border-radius: 2px; display: inline-block; }
+.tip { position: absolute; background: var(--surface); border: 1px solid var(--line-strong); border-radius: 6px; padding: 8px 10px; font-size: 13px; box-shadow: 0 6px 18px rgba(15,20,30,.18); pointer-events: none; z-index: 5; white-space: nowrap; }
+.tip strong { display: block; margin-bottom: 3px; }
+.tip div { display: flex; align-items: center; gap: 6px; justify-content: space-between; }
+.tip i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.tip b { margin-left: 14px; font-variant-numeric: tabular-nums; }
+
+/* ajustes */
+.ajuste { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; }
+.paramGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+details > summary { cursor: pointer; padding: 12px 16px; font-weight: 700; list-style-position: inside; }
+details[open] > summary { border-bottom: 1px solid var(--line); }
+details .tbl-wrap { border: 0; border-radius: 0 0 8px 8px; }
+.un2 { color: var(--muted); font-size: 12px; width: 3em; }
+#compBeb th.cc { text-align: center; }
+.nota-ex { color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+footer.wrap { padding-block: 0 36px; color: var(--muted); font-size: 13px; }
+footer p + p { margin-top: 4px; }
+.toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%) translateY(20px); background: var(--ink); color: var(--bg); padding: 9px 16px; border-radius: 6px; opacity: 0; transition: opacity .2s, transform .2s; pointer-events: none; z-index: 30; font-weight: 600; }
+.toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+@media (max-width: 860px) { .charts { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 720px) {
+  .strip { position: static; }
+  .selo { width: 72px; height: 72px; }
+  .mast-in { gap: 14px; }
+}
+@media (prefers-reduced-motion: reduce) { .toast { transition: none; } }
+@media print {
+  @page { size: A4 landscape; margin: 10mm 10mm 14mm; @bottom-center { content: "Página " counter(page) " de " counter(pages); font: 10px Arial, sans-serif; } }
+  body { background: #fff; font-size: 12px; }
+  body::before, .strip, .mast-actions, .toast, .ajuste { display: none !important; }
+  .masthead { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .card, .chbox, .tbl-wrap { break-inside: avoid; }
+  .cards { grid-template-columns: repeat(4, 1fr); }
+  main { gap: 18px; }
+}
+</style>
+</head>
+<body>
+
+
+<header class="masthead">
+  <div class="wrap mast-in">
+    <img class="selo" src="data:image/jpeg;base64,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" alt="Selo da Loja Ordem e Progresso nº 133, Belo Horizonte">
+    <div class="mast-txt">
+      <p class="eyebrow">Loja Ordem e Progresso nº 133 · Belo Horizonte</p>
+      <h1>Feijoada Beneficente 2026</h1>
+      <p class="sub">Simulador de cenários: buffet no GOMG ou preparo próprio no condomínio, com a bebida vendida à parte ou incluída no ingresso.</p>
+    </div>
+    <div class="mast-actions">
+      <button class="btn btn-ico" id="btnTema" type="button" aria-label="Mudar tema"></button>
+      <button class="btn" id="btnCopiar" type="button">Copiar resumo</button>
+      <button class="btn" id="btnReset" type="button">Restaurar padrão</button>
+    </div>
+  </div>
+</header>
+
+<section class="strip" aria-label="Controles principais">
+  <div class="wrap strip-in">
+    <div id="pessoasBox"></div>
+    <div id="stripIng"></div>
+  </div>
+</section>
+
+<main class="wrap">
+  <p class="alerta" id="alerta" role="status" hidden></p>
+
+  <section aria-labelledby="h-cen">
+    <h2 id="h-cen">Resultado para <span id="nPessoas">150</span> convidados <small>Altere os convidados e os ingressos acima, o restante recalcula na hora.</small></h2>
+    <div class="cards" id="cards" aria-live="polite"></div>
+    <div class="key" aria-label="Legenda da barra de custo">
+      <span><i class="k-alim"></i>Alimentos</span><span><i class="k-desc"></i>Descartáveis</span><span><i class="k-beb"></i>Bebidas</span>
+      <span><i class="k-buf"></i>Buffet</span><span><i class="k-ext"></i>Equipe e extras</span>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-qd">
+    <h2 id="h-qd">Quadro comparativo <small>Valores em reais, estimados.</small></h2>
+    <div class="tbl-wrap"><table id="quadro"></table></div>
+    <p class="nota-ex">Resultado final = sobra da feijoada + lucro da bebida vendida à parte. A receita total e o custo total já contêm a bebida, por isso o lucro da bebida não é somado de novo.</p>
+  </section>
+
+  <section aria-labelledby="h-gr">
+    <h2 id="h-gr">Gráficos</h2>
+    <div class="charts">
+      <div class="chbox"><h3>Receita e custo por cenário</h3><p class="nota">Barra cheia é a receita, barra clara é o custo.</p><div class="ch" id="chA"></div></div>
+      <div class="chbox"><h3>Sobra por número de convidados</h3>
+        <ul class="lg"><li><i style="background:var(--c1)"></i>Cenário 1</li><li><i style="background:var(--c2)"></i>Cenário 2</li><li><i style="background:var(--c3)"></i>Cenário 3</li><li><i style="background:var(--c4)"></i>Cenário 4</li></ul>
+        <div class="ch" id="chB"></div></div>
+      <div class="chbox wide"><h3>Sobra por valor do ingresso</h3><p class="nota">Os pontos marcam o ingresso que está em uso em cada cenário.</p>
+        <ul class="lg"><li><i style="background:var(--c1)"></i>Cenário 1</li><li><i style="background:var(--c2)"></i>Cenário 2</li><li><i style="background:var(--c3)"></i>Cenário 3</li><li><i style="background:var(--c4)"></i>Cenário 4</li></ul>
+        <div class="ch" id="chC"></div></div>
+    </div>
+  </section>
+
+  <div class="ajuste">
+    <section aria-labelledby="h-par">
+      <h2 id="h-par">Buffet e parâmetros</h2>
+      <div class="paramGrid" id="paramGrid"></div>
+    </section>
+
+    <section aria-labelledby="h-prem">
+      <h2 id="h-prem">Consumo de bebidas <small>Projetado pelos convidados, pelo método de litros.</small></h2>
+      <p class="nota-ex">Mude o número de convidados lá no alto e as quantidades de bebida acompanham. Aqui você ajusta o hábito de consumo. Referência: 1,5 litro de chopp ou de cerveja por pessoa que bebe em 4 horas, podendo chegar a 2 litros em festa longa.</p>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th scope="col">Premissa</th><th scope="col" class="r">Venda à parte (cen. 1 e 2)</th><th scope="col" class="r">Cenário 3 (chopp)</th><th scope="col" class="r">Cenário 4 (cerveja)</th><th scope="col"></th></tr></thead>
+        <tbody id="premBody"></tbody></table></div>
+    </section>
+
+    <section aria-labelledby="h-beb">
+      <h2 id="h-beb">Bebidas <small>Preços de exemplo, troque pelos reais.</small></h2>
+      <p class="nota-ex">Digite o nome, o custo e o preço de venda. As colunas de consumo mostram quantas porções (latas, copos, garrafas) cada convidado toma, calculadas pelas premissas acima. O custo do chopp vem do preço do barril.</p>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th scope="col">Bebida</th><th scope="col" class="r">Custo por porção (R$)</th><th scope="col" class="r">Preço de venda (R$)</th><th scope="col" class="r">ml por porção</th><th scope="col" class="r">Litros por embalagem</th><th scope="col" class="r">Por pessoa, à parte</th><th scope="col" class="r">Por pessoa, cen. 3</th><th scope="col" class="r">Por pessoa, cen. 4</th><th scope="col" class="r">Lucro por unidade</th></tr></thead>
+        <tbody id="bebBody"></tbody></table></div>
+    </section>
+
+    <section aria-labelledby="h-cb">
+      <h2 id="h-cb">Compras de bebidas <small>Para <span id="nPessoasBeb">150</span> convidados, em embalagens fechadas.</small></h2>
+      <div class="tbl-wrap"><table id="compBeb"></table></div>
+    </section>
+
+    <section aria-labelledby="h-ext">
+      <h2 id="h-ext">Equipe contratada e extras <small>Quantidade zero significa sem custo. Marque em quais cenários cada item entra.</small></h2>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th scope="col">Item</th><th scope="col" class="r">Quantidade</th><th scope="col" class="r">Valor unitário (R$)</th><th scope="col" class="r">Total</th><th scope="col" class="cc">Cen. 1</th><th scope="col" class="cc">Cen. 2</th><th scope="col" class="cc">Cen. 3</th><th scope="col" class="cc">Cen. 4</th></tr></thead>
+        <tbody id="extBody"></tbody></table></div>
+    </section>
+
+    <section aria-labelledby="h-al">
+      <h2 id="h-al">Compras</h2>
+      <details>
+        <summary>Alimentos dos cenários 2, 3 e 4</summary>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th scope="col">Item</th><th scope="col" class="cc">Unidade</th><th scope="col" class="r">Qtd. base (150 pessoas)</th><th scope="col" class="r">Preço unitário (R$)</th><th scope="col" class="r">Custo com os convidados atuais</th></tr></thead>
+          <tbody id="alBody"></tbody></table></div>
+      </details>
+      <details style="margin-top:12px">
+        <summary>Descartáveis</summary>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th scope="col">Item</th><th scope="col" class="cc">Unidade</th><th scope="col" class="r">Qtd. base (150 pessoas)</th><th scope="col" class="r">Preço unitário (R$)</th><th scope="col" class="r">Custo</th><th scope="col" class="cc">Cen. 2</th><th scope="col" class="cc">Cen. 3</th><th scope="col" class="cc">Cen. 4</th></tr></thead>
+          <tbody id="descBody"></tbody></table></div>
+      </details>
+    </section>
+  </div>
+</main>
+
+<footer class="wrap">
+  <p>Pratos, talheres, panelas e gás ficam por conta do condomínio e não entram na conta. A mão de obra dos irmãos e das esposas é voluntária.</p>
+  <p>Preços, custos das cervejas e consumos por pessoa são estimativas e precisam de cotação. O chopp é comprado em barris inteiros, por isso o custo sobe em degraus.</p>
+  <p id="geradoEm"></p>
+</footer>
+<div class="toast" id="aviso" role="status"></div>
+
+<script>
+var ESTADO_INICIAL = {"pessoas":150,"ing":[80,50,80,80],"params":{"custoBuffetPP":40,"minBuffet":0,"folga":0.1,"precoBarril":795,"mlCopo":400,"litrosBarril":50},"prem":{"pctBebe":[0.7,0.7,0.7],"pctChopp":[0.5,1,0],"litChopp":[1.5,1.5,1.5],"litCerv":[1.5,1.5,1.5],"pctHeineken":[0.7,0.7,0.7],"litSoft":[0.5,0.5,0.5],"pctRefri":[0.7,0.7,0.7],"litAgua":[0.5,0.5,0.5],"geloKg":[0.5,0.5,0.5]},"beb":[{"nome":"Heineken","un":"garrafa ou lata","custo":4.98,"venda":10,"consA":1.05,"cons3":0,"cons4":2.1,"ml":350,"litros":0.35,"emb":"lata"},{"nome":"Antarctica","un":"garrafa ou lata","custo":4.74,"venda":14,"consA":0.332980972515856,"cons3":0,"cons4":0.665961945031712,"ml":473,"litros":0.473,"emb":"lat o"},{"nome":"Chopp Kaiser","un":"copo de 400 ml","custo":0,"venda":8,"consA":1.3125,"cons3":2.625,"cons4":0,"ml":400,"litros":50,"emb":"barril"},{"nome":"Refrigerante","un":"copo de 300 ml","custo":1.4235,"venda":5,"consA":1.16666666666667,"cons3":1.16666666666667,"cons4":1.16666666666667,"ml":300,"litros":2,"emb":"garrafa"},{"nome":"Suco","un":"copo de 300 ml","custo":2.397,"venda":5,"consA":0.5,"cons3":0.5,"cons4":0.5,"ml":300,"litros":1,"emb":"caixa"},{"nome":" gua","un":"garrafa de 500 ml","custo":2.29,"venda":3,"consA":1,"cons3":1,"cons4":1,"ml":500,"litros":0.5,"emb":"garrafa"},{"nome":"Gelo","un":"por pessoa","custo":1,"venda":0,"consA":1,"cons3":1,"cons4":1,"ml":500,"litros":1,"emb":"kg"}],"extras":[{"nome":"Cozinheiro(a) contratado(a), diária","qtd":1,"valor":300,"flags":[0,1,1,1]},{"nome":"Auxiliar de cozinha ou salão contratado(a), diária","qtd":2,"valor":150,"flags":[0,1,1,1]},{"nome":"Músico, cachê (ao vivo)","qtd":1,"valor":500,"flags":[1,1,1,1]},{"nome":"Som e equipamento, aluguel","qtd":0,"valor":300,"flags":[1,1,1,1]},{"nome":"Outros custos (livre)","qtd":0,"valor":0,"flags":[1,1,1,1]}],"alimentos":[{"g":"","nome":"Feijão preto","un":"kg","qtd":12,"preco":9.16666666666667},{"g":"Carnes (peso bruto)","nome":"Carne seca","un":"kg","qtd":6,"preco":55},{"g":"Carnes (peso bruto)","nome":"Costelinha","un":"kg","qtd":8,"preco":32},{"g":"Carnes (peso bruto)","nome":"Lombo","un":"kg","qtd":6,"preco":27},{"g":"Carnes (peso bruto)","nome":"Calabresa","un":"kg","qtd":6,"preco":20},{"g":"Carnes (peso bruto)","nome":"Paio","un":"kg","qtd":4,"preco":32},{"g":"Carnes (peso bruto)","nome":"Bacon (inclui o da farofa)","un":"kg","qtd":5.5,"preco":32},{"g":"Carnes (peso bruto)","nome":"Orelha e pé","un":"kg","qtd":3,"preco":12.6666666666667},{"g":"","nome":"Arroz branco","un":"kg","qtd":10,"preco":6.5},{"g":"","nome":"Farinha de mandioca (farofa)","un":"kg","qtd":5,"preco":8},{"g":"","nome":"Ovos (farofa)","un":"dúzia","qtd":2,"preco":14},{"g":"","nome":"Cebola (farofa)","un":"kg","qtd":4,"preco":9.25},{"g":"","nome":"Couve","un":"maço","qtd":25,"preco":4},{"g":"","nome":"Laranja","un":"unidade","qtd":60,"preco":1},{"g":"","nome":"Banana para empanar","un":"unidade","qtd":100,"preco":0.5},{"g":"","nome":"Farinha de rosca (banana)","un":"kg","qtd":3,"preco":7},{"g":"","nome":"Ovos (banana)","un":"dúzia","qtd":1,"preco":14},{"g":"","nome":"Óleo (banana)","un":"litro","qtd":1,"preco":15},{"g":"","nome":"Vinagrete e molho de pimenta","un":"porção","qtd":150,"preco":0.266666666666667},{"g":"","nome":"Folhas da salada tropical","un":"kg","qtd":4,"preco":10},{"g":"","nome":"Frutas da salada tropical","un":"kg","qtd":5,"preco":16},{"g":"","nome":"Leite condensado (mousse)","un":"lata","qtd":20,"preco":7.5},{"g":"","nome":"Creme de leite (mousse)","un":"lata","qtd":20,"preco":4.5},{"g":"","nome":"Polpa de maracujá (mousse)","un":"kg","qtd":2,"preco":17.5},{"g":"","nome":"Potes com colher (mousse)","un":"unidade","qtd":150,"preco":1},{"g":"","nome":"Temperos (alho, cebola, louro, óleo, sal)","un":"pessoa","qtd":150,"preco":1}],"desc":[{"nome":"Guardanapos","un":"pessoa","qtd":150,"preco":0.266666666666667,"flags":[1,1,1]},{"nome":"Copos descartáveis","un":"pessoa","qtd":150,"preco":0.533333333333333,"flags":[0,1,1]}]};
+var ESTADO_CARIMBO = "24/10/2026 09:34";
+</script>
+<script>
+var CENARIOS = [
+  { curto: "Buffet no GOMG", nome: "Cenário 1: Buffet no GOMG, bebida à parte", tag: "Bebida à parte" },
+  { curto: "Condomínio, só comida", nome: "Cenário 2: Condomínio, só comida, bebida à parte", tag: "Bebida à parte" },
+  { curto: "Tudo incluído com chopp", nome: "Cenário 3: Condomínio, tudo incluído com chopp", tag: "Tudo no ingresso" },
+  { curto: "Tudo incluído com cerveja", nome: "Cenário 4: Condomínio, tudo incluído com cerveja", tag: "Tudo no ingresso" }
+];
+
+var IDX_CHOPP = 2;
+
+function defaultsBase() {
+  var carnes = "Carnes (peso bruto)";
+  var d = {
+    pessoas: 150,
+    ing: [80, 50, 60, 70],
+    params: { custoBuffetPP: 40, minBuffet: 0, folga: 0.10, precoBarril: 795, mlCopo: 400, litrosBarril: 50 },
+    prem: {
+      pctBebe: [0.7, 0.7, 0.7], pctChopp: [0.5, 1, 0], litChopp: [1.5, 1.5, 1.5], litCerv: [1.5, 1.5, 1.5],
+      pctHeineken: [0.7, 0.7, 0.7], litSoft: [0.5, 0.5, 0.5], pctRefri: [0.7, 0.7, 0.7], litAgua: [0.5, 0.5, 0.5], geloKg: [0.5, 0.5, 0.5]
+    },
+    beb: [
+      { nome: "Heineken", un: "lata 350 ml", custo: 4.98, venda: 10, consA: 0, cons3: 0, cons4: 0, ml: 350, litros: 0.35, emb: "lata" },
+      { nome: "Antarctica", un: "latão 473 ml", custo: 4.74, venda: 14, consA: 0, cons3: 0, cons4: 0, ml: 473, litros: 0.473, emb: "latão" },
+      { nome: "Chopp Kaiser", un: "copo de 400 ml", custo: 0, venda: 8, consA: 0, cons3: 0, cons4: 0, ml: 400, litros: 50, emb: "barril" },
+      { nome: "Refrigerante", un: "copo 300 ml", custo: 9.49 / (2000 / 300), venda: 5, consA: 0, cons3: 0, cons4: 0, ml: 300, litros: 2, emb: "garrafa" },
+      { nome: "Suco", un: "copo 300 ml", custo: 7.99 / (1000 / 300), venda: 5, consA: 0, cons3: 0, cons4: 0, ml: 300, litros: 1, emb: "caixa" },
+      { nome: "Água", un: "garrafa 500 ml", custo: 2.29, venda: 3, consA: 0, cons3: 0, cons4: 0, ml: 500, litros: 0.5, emb: "garrafa" },
+      { nome: "Gelo", un: "0,5 kg por pessoa", custo: 1, venda: 0, consA: 0, cons3: 0, cons4: 0, ml: 500, litros: 1, emb: "kg" }
+    ],
+    extras: [
+      { nome: "Cozinheiro(a) contratado(a), diária", qtd: 0, valor: 300, flags: [0, 1, 1, 1] },
+      { nome: "Auxiliar de cozinha ou salão, diária", qtd: 0, valor: 150, flags: [0, 1, 1, 1] },
+      { nome: "Músico, cachê (ao vivo)", qtd: 0, valor: 500, flags: [1, 1, 1, 1] },
+      { nome: "Som e equipamento, aluguel", qtd: 0, valor: 300, flags: [1, 1, 1, 1] },
+      { nome: "Outros custos (livre)", qtd: 0, valor: 0, flags: [1, 1, 1, 1] }
+    ],
+    alimentos: [
+      { g: "", nome: "Feijão preto", un: "kg", qtd: 12, preco: 110 / 12 },
+      { g: carnes, nome: "Carne seca", un: "kg", qtd: 6, preco: 55 },
+      { g: carnes, nome: "Costelinha", un: "kg", qtd: 8, preco: 32 },
+      { g: carnes, nome: "Lombo", un: "kg", qtd: 6, preco: 27 },
+      { g: carnes, nome: "Calabresa", un: "kg", qtd: 6, preco: 20 },
+      { g: carnes, nome: "Paio", un: "kg", qtd: 4, preco: 32 },
+      { g: carnes, nome: "Bacon (inclui o da farofa)", un: "kg", qtd: 5.5, preco: 32 },
+      { g: carnes, nome: "Orelha e pé", un: "kg", qtd: 3, preco: 38 / 3 },
+      { g: "", nome: "Arroz branco", un: "kg", qtd: 10, preco: 6.5 },
+      { g: "", nome: "Farinha de mandioca (farofa)", un: "kg", qtd: 5, preco: 8 },
+      { g: "", nome: "Ovos (farofa)", un: "dúzia", qtd: 2, preco: 14 },
+      { g: "", nome: "Cebola (farofa)", un: "kg", qtd: 4, preco: 37 / 4 },
+      { g: "", nome: "Couve", un: "maço", qtd: 25, preco: 4 },
+      { g: "", nome: "Laranja", un: "unidade", qtd: 60, preco: 1 },
+      { g: "", nome: "Banana para empanar", un: "unidade", qtd: 100, preco: 0.5 },
+      { g: "", nome: "Farinha de rosca (banana)", un: "kg", qtd: 3, preco: 7 },
+      { g: "", nome: "Ovos (banana)", un: "dúzia", qtd: 1, preco: 14 },
+      { g: "", nome: "Óleo (banana)", un: "litro", qtd: 1, preco: 15 },
+      { g: "", nome: "Vinagrete e molho de pimenta", un: "porção", qtd: 150, preco: 40 / 150 },
+      { g: "", nome: "Folhas da salada tropical", un: "kg", qtd: 4, preco: 10 },
+      { g: "", nome: "Frutas da salada tropical", un: "kg", qtd: 5, preco: 16 },
+      { g: "", nome: "Leite condensado (mousse)", un: "lata", qtd: 20, preco: 7.5 },
+      { g: "", nome: "Creme de leite (mousse)", un: "lata", qtd: 20, preco: 4.5 },
+      { g: "", nome: "Polpa de maracujá (mousse)", un: "kg", qtd: 2, preco: 17.5 },
+      { g: "", nome: "Potes com colher (mousse)", un: "unidade", qtd: 150, preco: 1 },
+      { g: "", nome: "Temperos (alho, cebola, louro, óleo, sal)", un: "pessoa", qtd: 150, preco: 1 }
+    ],
+    desc: [
+      { nome: "Guardanapos", un: "pessoa", qtd: 150, preco: 40 / 150, flags: [1, 1, 1] },
+      { nome: "Copos descartáveis", un: "pessoa", qtd: 150, preco: 80 / 150, flags: [0, 1, 1] }
+    ]
+  };
+  aplicaPrem(d);
+  return d;
+}
+
+function defaults() {
+  var base = defaultsBase();
+  try {
+    if (typeof ESTADO_INICIAL !== "undefined" && ESTADO_INICIAL) {
+      var o = JSON.parse(JSON.stringify(ESTADO_INICIAL));
+      if (!o.prem) o.prem = base.prem;
+      o.beb.forEach(function (b, j) {
+        var d = base.beb[j];
+        if (d) {
+          if (b.ml == null) b.ml = d.ml;
+          if (b.litros == null) b.litros = d.litros;
+          if (b.emb == null) b.emb = d.emb;
+        }
+      });
+      return o;
+    }
+  } catch (e) { /* usa o padrão embutido */ }
+  return base;
+}
+
+/* Método de litros: calcula as porções por pessoa de cada bebida nas três situações (à parte, cenário 3, cenário 4) */
+function aplicaPrem(S) {
+  var P = S.prem, B = S.beb;
+  function por(litros, ml) { return ml > 0 ? litros * 1000 / ml : 0; }
+  for (var k = 0; k < 3; k++) {
+    var v = [];
+    v[0] = por(P.pctBebe[k] * (1 - P.pctChopp[k]) * P.litCerv[k] * P.pctHeineken[k], B[0].ml);
+    v[1] = por(P.pctBebe[k] * (1 - P.pctChopp[k]) * P.litCerv[k] * (1 - P.pctHeineken[k]), B[1].ml);
+    v[2] = por(P.pctBebe[k] * P.pctChopp[k] * P.litChopp[k], S.params.mlCopo);
+    v[3] = por(P.litSoft[k] * P.pctRefri[k], B[3].ml);
+    v[4] = por(P.litSoft[k] * (1 - P.pctRefri[k]), B[4].ml);
+    v[5] = por(P.litAgua[k], B[5].ml);
+    v[6] = por(P.geloKg[k], B[6].ml);
+    var chave = ["consA", "cons3", "cons4"][k];
+    for (var j = 0; j < 7; j++) B[j][chave] = v[j];
+  }
+}
+
+function plural(e) {
+  e = String(e || "");
+  if (/ão$/.test(e)) return e.replace(/ão$/, "ões");
+  if (e === "kg") return "kg";
+  if (/il$/.test(e)) return e.replace(/il$/, "is");
+  return e + "s";
+}
+
+function calcCompras(n, S) {
+  var cb = copoPorBarril(S), out = [];
+  S.beb.forEach(function (b, j) {
+    var pe = j === IDX_CHOPP ? cb : (b.ml > 0 ? b.litros * 1000 / b.ml : 0), linha = [];
+    ["consA", "cons3", "cons4"].forEach(function (k) {
+      var porc = n * b[k];
+      var emb = pe > 0 ? Math.ceil(Math.round(porc / pe * 1e6) / 1e6) : 0;
+      var preco = j === IDX_CHOPP ? S.params.precoBarril : b.custo * pe;
+      linha.push({ por: porc, emb: emb, custo: emb * preco });
+    });
+    out.push(linha);
+  });
+  return out;
+}
+
+function copoPorBarril(S) {
+  return S.params.litrosBarril * 1000 / S.params.mlCopo;
+}
+
+function calcCenarios(n, S) {
+  var P = S.params;
+  var cb = copoPorBarril(S);
+  var foodBase = 0;
+  S.alimentos.forEach(function (a) { foodBase += a.qtd * a.preco; });
+  var out = [];
+  for (var c = 1; c <= 4; c++) {
+    var chave = c <= 2 ? "consA" : (c === 3 ? "cons3" : "cons4");
+    var semChopp = 0;
+    S.beb.forEach(function (b, j) { if (j !== IDX_CHOPP) semChopp += b.custo * b[chave]; });
+    var copos = n * S.beb[IDX_CHOPP][chave];
+    var barris = Math.ceil(Math.round(copos / cb * 1e6) / 1e6);
+    var beb = n * semChopp + barris * P.precoBarril;
+    var recBeb = 0;
+    if (c <= 2) { S.beb.forEach(function (b) { recBeb += b.venda * b.consA; }); recBeb *= n; }
+    var alim = c === 1 ? 0 : foodBase * n / 150 * (1 + P.folga);
+    var desc = 0;
+    if (c > 1) { S.desc.forEach(function (d) { desc += d.qtd * d.preco * d.flags[c - 2]; }); desc *= n / 150; }
+    var buf = c === 1 ? Math.max(n, P.minBuffet) * P.custoBuffetPP : 0;
+    var ext = 0;
+    S.extras.forEach(function (e) { ext += e.qtd * e.valor * e.flags[c - 1]; });
+    var ing = S.ing[c - 1];
+    var recIng = ing * n;
+    var recTot = recIng + recBeb;
+    var custo = alim + desc + beb + buf + ext;
+    var sobra = recTot - custo;
+    var lucroBeb = c <= 2 ? recBeb - beb : 0;
+    out.push({
+      ing: ing, n: n, recIng: recIng, recBeb: recBeb, recTot: recTot,
+      alim: alim, desc: desc, beb: beb, buf: buf, ext: ext, custo: custo,
+      custoPP: n > 0 ? custo / n : 0, sobra: sobra, sobraPP: n > 0 ? sobra / n : 0,
+      margem: recTot > 0 ? sobra / recTot : 0, lucroBeb: lucroBeb,
+      margBeb: recBeb > 0 ? lucroBeb / recBeb : 0, sobraSemBeb: sobra - lucroBeb,
+      barris: barris, copos: copos
+    });
+  }
+  return out;
+}
+
+if (typeof module !== "undefined") { module.exports = { defaults: defaults, defaultsBase: defaultsBase, aplicaPrem: aplicaPrem, calcCompras: calcCompras, plural: plural, calcCenarios: calcCenarios, CENARIOS: CENARIOS }; }
+
+</script>
+<script>
+(function () {
+  var STORE_KEY = "feijoada133_v1" + (typeof ESTADO_CARIMBO !== "undefined" && ESTADO_CARIMBO ? "_" + ESTADO_CARIMBO : "");
+  var S = defaults();
+
+  function sameShape(a, b) {
+    if (Array.isArray(b)) {
+      if (!Array.isArray(a) || a.length !== b.length) return false;
+      return b.every(function (x, i) { return sameShape(a[i], x); });
+    }
+    if (b && typeof b === "object") {
+      if (!a || typeof a !== "object") return false;
+      return Object.keys(b).every(function (k) { return sameShape(a[k], b[k]); });
+    }
+    return typeof a === typeof b;
+  }
+  try {
+    var raw = localStorage.getItem(STORE_KEY);
+    if (raw) {
+      var o = JSON.parse(raw);
+      if (o && sameShape(o, defaults())) S = o;
+    }
+  } catch (e) { /* sem armazenamento: segue com o padrão */ }
+
+  try { aplicaPrem(S); } catch (e) { }
+  function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch (e) { } }
+
+  /* ---------- formatação ---------- */
+  var f0 = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
+  var f2 = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  function brl(v) { return f0.format(Math.round(v * 100) / 100 + 0); }
+  function brl2(v) { return f2.format(v + 0); }
+  function pct(v) { return (v * 100).toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + "%"; }
+  function num1(v) { return v.toLocaleString("pt-BR", { maximumFractionDigits: 1 }); }
+  function mil(v) {
+    if (v === 0) return "0";
+    return (v / 1000).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) + " mil";
+  }
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;"); }
+  function cls(v) { return v < -0.005 ? "neg" : "pos"; }
+  function trim(v) { return String(parseFloat(Number(v).toFixed(4))); }
+
+  /* ---------- acesso por caminho ---------- */
+  function getPath(obj, path) { return path.split(".").reduce(function (o, k) { return o[k]; }, obj); }
+  function setPath(obj, path, val) {
+    var p = path.split("."), o = obj;
+    for (var i = 0; i < p.length - 1; i++) o = o[p[i]];
+    o[p[p.length - 1]] = val;
+  }
+
+  /* ---------- campos de entrada ---------- */
+  function numInput(path, o) {
+    o = o || {};
+    var scale = o.scale || 1;
+    var v = getPath(S, path) * scale;
+    return '<input type="number" inputmode="decimal" min="0" step="' + (o.step || "any") + '" id="in-' + path.replace(/\./g, "-") +
+      '" data-path="' + path + '"' + (scale !== 1 ? ' data-scale="' + scale + '"' : "") +
+      ' value="' + trim(v) + '"' + (o.aria ? ' aria-label="' + esc(o.aria) + '"' : "") + ">";
+  }
+  function txtInput(path, aria) {
+    return '<input type="text" id="in-' + path.replace(/\./g, "-") + '" data-path="' + path + '" value="' + esc(getPath(S, path)) + '" aria-label="' + esc(aria) + '">';
+  }
+  function chk(path, aria) {
+    return '<input type="checkbox" id="in-' + path.replace(/\./g, "-") + '" data-path="' + path + '"' + (getPath(S, path) ? " checked" : "") + ' aria-label="' + esc(aria) + '">';
+  }
+
+  function buildStatic() {
+    var h = "";
+    /* faixa de controles */
+    document.getElementById("stripIng").innerHTML = CENARIOS.map(function (c, i) {
+      return '<div class="fld c' + (i + 1) + '"><label for="in-ing-' + i + '"><span class="dot"></span>Ingresso, cenário ' + (i + 1) + '</label>' +
+        '<div class="money"><span>R$</span>' + numInput("ing." + i, { aria: "Ingresso do cenário " + (i + 1) }) + "</div></div>";
+    }).join("");
+    document.getElementById("pessoasBox").innerHTML =
+      '<label for="in-pessoas">Convidados</label>' +
+      '<div class="pess"><input type="range" min="20" max="300" step="1" id="in-pessoas-r" data-path="pessoas" value="' + S.pessoas + '" aria-label="Convidados, controle deslizante">' +
+      numInput("pessoas", { step: "1" }) + "</div>";
+
+    /* parâmetros */
+    var P = [
+      ["custoBuffetPP", "Custo do buffet por pessoa", "R$", 1, "Proposta do buffet: R$ 6.000 para 150 pessoas."],
+      ["minBuffet", "Mínimo de pessoas contratado no buffet", "pessoas", 1, "Use 150 para simular contrato fechado. Zero cobra só o que for vendido."],
+      ["folga", "Folga nos alimentos", "%", 100, "Margem de segurança sobre as compras de comida."],
+      ["precoBarril", "Preço do barril de chopp", "R$", 1, "Barril de 50 litros. Confirmar com o fornecedor."],
+      ["mlCopo", "Volume do copo de chopp", "ml", 1, ""],
+      ["litrosBarril", "Litros por barril", "L", 1, ""]
+    ];
+    document.getElementById("paramGrid").innerHTML = P.map(function (p) {
+      return '<div class="fld"><label for="in-params-' + p[0] + '">' + p[1] + '</label><div class="money"><span>' + p[2] + "</span>" +
+        numInput("params." + p[0], { scale: p[3] }) + "</div>" + (p[4] ? '<small>' + p[4] + "</small>" : "") + "</div>";
+    }).join("") + '<div class="fld"><label>Copos por barril</label><div class="readout" data-out="copoBarril"></div><small>Calculado pelo volume do copo e pelos litros do barril.</small></div>';
+
+    /* premissas de consumo (método de litros) */
+    var PR = [
+      ["pctBebe", "% dos convidados que bebem álcool", 100, "%"],
+      ["pctChopp", "% dos bebedores que toma chopp (resto: cerveja)", 100, "%"],
+      ["litChopp", "Litros de chopp por pessoa que toma", 1, "L"],
+      ["litCerv", "Litros de cerveja por pessoa que toma", 1, "L"],
+      ["pctHeineken", "% da cerveja que é Heineken (resto: Antarctica)", 100, "%"],
+      ["litSoft", "Litros de refrigerante e suco por convidado", 1, "L"],
+      ["pctRefri", "% de refrigerante (resto: suco)", 100, "%"],
+      ["litAgua", "Litros de água por convidado", 1, "L"],
+      ["geloKg", "Gelo, kg por convidado", 1, "kg"]
+    ];
+    h = "";
+    PR.forEach(function (p) {
+      h += "<tr><th scope='row'>" + p[1] + "</th>";
+      for (var k = 0; k < 3; k++) h += "<td>" + numInput("prem." + p[0] + "." + k, { scale: p[2], aria: p[1] + ", " + ["venda à parte", "cenário 3", "cenário 4"][k] }) + "</td>";
+      h += '<td class="un2">' + p[3] + "</td></tr>";
+    });
+    document.getElementById("premBody").innerHTML = h;
+
+    /* bebidas */
+    h = "";
+    S.beb.forEach(function (b, j) {
+      var nomeCel = j < 2 ? txtInput("beb." + j + ".nome", "Nome da bebida") : '<span class="nm">' + esc(b.nome) + "</span>";
+      var custoCel = j === 2 ? '<span class="readout sm" data-out="choppCusto"></span>' : numInput("beb." + j + ".custo", { aria: "Custo de " + b.nome });
+      var mlCel = j === 2 ? '<span class="readout sm" data-out="choppMl"></span>' : numInput("beb." + j + ".ml", { aria: "ml por porção de " + b.nome });
+      var litCel = j === 2 ? '<span class="readout sm" data-out="choppLit"></span>' : numInput("beb." + j + ".litros", { aria: "Litros por embalagem de " + b.nome });
+      h += "<tr><th scope='row'>" + nomeCel + '<small class="un">' + esc(b.un) + "</small></th><td>" + custoCel + "</td><td>" +
+        numInput("beb." + j + ".venda", { aria: "Preço de venda de " + b.nome }) + "</td><td>" + mlCel + "</td><td>" + litCel +
+        '</td><td class="r" data-out="cons-' + j + '-consA"></td><td class="r" data-out="cons-' + j + '-cons3"></td><td class="r" data-out="cons-' + j +
+        '-cons4"></td><td class="r" data-out="lucro-' + j + '"></td></tr>';
+    });
+    document.getElementById("bebBody").innerHTML = h;
+
+    /* extras */
+    h = "";
+    S.extras.forEach(function (e, k) {
+      h += "<tr><th scope='row'>" + esc(e.nome) + "</th><td>" + numInput("extras." + k + ".qtd", { step: "1", aria: "Quantidade de " + e.nome }) + "</td><td>" +
+        numInput("extras." + k + ".valor", { aria: "Valor unitário de " + e.nome }) + '</td><td class="r" data-out="ext-' + k + '"></td>';
+      for (var c = 0; c < 4; c++) h += '<td class="ck">' + chk("extras." + k + ".flags." + c, "Entra no cenário " + (c + 1)) + "</td>";
+      h += "</tr>";
+    });
+    h += '<tr class="tot"><th scope="row">Total de extras por cenário</th><td></td><td></td><td></td>';
+    for (var c2 = 0; c2 < 4; c2++) h += '<td class="r" data-out="ext-tot-' + c2 + '"></td>';
+    h += "</tr>";
+    document.getElementById("extBody").innerHTML = h;
+
+    /* alimentos */
+    h = "";
+    var gAtual = "";
+    S.alimentos.forEach(function (a, i) {
+      if (a.g && a.g !== gAtual) h += '<tr class="grp"><th colspan="5" scope="colgroup">' + esc(a.g) + "</th></tr>";
+      gAtual = a.g;
+      h += "<tr><th scope='row'" + (a.g ? ' class="ind"' : "") + ">" + esc(a.nome) + '</th><td class="c">' + esc(a.un) + "</td><td>" +
+        numInput("alimentos." + i + ".qtd", { aria: "Quantidade base de " + a.nome }) + "</td><td>" +
+        numInput("alimentos." + i + ".preco", { aria: "Preço unitário de " + a.nome }) + '</td><td class="r" data-out="al-' + i + '"></td></tr>';
+    });
+    h += '<tr class="tot"><th scope="row" colspan="4">Subtotal dos alimentos</th><td class="r" data-out="al-sub"></td></tr>' +
+      '<tr><th scope="row" colspan="4">Folga</th><td class="r" data-out="al-folga"></td></tr>' +
+      '<tr class="tot"><th scope="row" colspan="4">Total de alimentos, com folga</th><td class="r" data-out="al-tot"></td></tr>';
+    document.getElementById("alBody").innerHTML = h;
+
+    h = "";
+    S.desc.forEach(function (d, i) {
+      h += "<tr><th scope='row'>" + esc(d.nome) + '</th><td class="c">' + esc(d.un) + "</td><td>" +
+        numInput("desc." + i + ".qtd", { aria: "Quantidade base de " + d.nome }) + "</td><td>" +
+        numInput("desc." + i + ".preco", { aria: "Preço unitário de " + d.nome }) + '</td><td class="r" data-out="ds-' + i + '"></td>';
+      for (var c = 0; c < 3; c++) h += '<td class="ck">' + chk("desc." + i + ".flags." + c, "Entra no cenário " + (c + 2)) + "</td>";
+      h += "</tr>";
+    });
+    document.getElementById("descBody").innerHTML = h;
+  }
+
+  /* ---------- gráficos ---------- */
+  function niceScale(min, max, target) {
+    var span = (max - min) || 1;
+    var step0 = span / target;
+    var mag = Math.pow(10, Math.floor(Math.log10(step0)));
+    var nrm = step0 / mag;
+    var step = (nrm < 1.5 ? 1 : nrm < 3 ? 2 : nrm < 7 ? 5 : 10) * mag;
+    var lo = Math.floor(min / step + 1e-9) * step, hi = Math.ceil(max / step - 1e-9) * step;
+    var t = [];
+    for (var v = lo; v <= hi + step / 2; v += step) t.push(Math.round(v * 1e6) / 1e6);
+    return { lo: lo, hi: hi, ticks: t };
+  }
+  var COR = ["var(--c1)", "var(--c2)", "var(--c3)", "var(--c4)"];
+
+  function legendHTML(names) {
+    return '<ul class="lg">' + names.map(function (n, i) { return '<li><i style="background:' + COR[i] + '"></i>' + esc(n) + "</li>"; }).join("") + "</ul>";
+  }
+
+  function lineChart(el, cfg) {
+    var W = Math.max(280, el.clientWidth || 600), H = cfg.h || 290;
+    var m = { l: 52, r: 16, t: 14, b: 42 };
+    var iw = W - m.l - m.r, ih = H - m.t - m.b;
+    var xs = cfg.xs, xmin = xs[0], xmax = xs[xs.length - 1];
+    var ymin = 0, ymax = 0;
+    cfg.series.forEach(function (s) { s.ys.forEach(function (y) { ymin = Math.min(ymin, y); ymax = Math.max(ymax, y); }); });
+    var sc = niceScale(ymin, ymax, 5);
+    function X(x) { return m.l + (x - xmin) / (xmax - xmin) * iw; }
+    function Y(y) { return m.t + ih - (y - sc.lo) / (sc.hi - sc.lo) * ih; }
+    var svg = '<svg viewBox="0 0 ' + W + " " + H + '" width="' + W + '" height="' + H + '" role="img" aria-label="' + esc(cfg.aria) + '">';
+    sc.ticks.forEach(function (t) {
+      svg += '<line class="gl' + (t === 0 ? " zero" : "") + '" x1="' + m.l + '" x2="' + (W - m.r) + '" y1="' + Y(t) + '" y2="' + Y(t) + '"/>';
+      svg += '<text class="tk" x="' + (m.l - 8) + '" y="' + (Y(t) + 4) + '" text-anchor="end">' + mil(t) + "</text>";
+    });
+    var every = Math.max(1, Math.ceil(46 / (iw / (xs.length - 1))));
+    cfg.xlab.forEach(function (x, i) {
+      if (i % every === 0) svg += '<text class="tk" x="' + X(x) + '" y="' + (H - m.b + 18) + '" text-anchor="middle">' + cfg.xfmt(x) + "</text>";
+    });
+    svg += '<text class="ax" x="' + (m.l + iw / 2) + '" y="' + (H - 4) + '" text-anchor="middle">' + esc(cfg.xtitle) + "</text>";
+    if (cfg.markerX != null && cfg.markerX >= xmin && cfg.markerX <= xmax)
+      svg += '<line class="mk" x1="' + X(cfg.markerX) + '" x2="' + X(cfg.markerX) + '" y1="' + m.t + '" y2="' + (m.t + ih) + '"/>';
+    cfg.series.forEach(function (s, i) {
+      var d = s.ys.map(function (y, k) { return (k ? "L" : "M") + X(xs[k]).toFixed(1) + " " + Y(y).toFixed(1); }).join("");
+      svg += '<path d="' + d + '" fill="none" stroke="' + COR[i] + '" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>';
+    });
+    (cfg.dots || []).forEach(function (p) {
+      if (p.x < xmin || p.x > xmax) return;
+      svg += '<circle cx="' + X(p.x) + '" cy="' + Y(p.y) + '" r="4.6" fill="' + COR[p.i] + '" stroke="var(--surface)" stroke-width="2"/>';
+    });
+    svg += '<line class="hv" x1="0" x2="0" y1="' + m.t + '" y2="' + (m.t + ih) + '" style="display:none"/></svg><div class="tip" hidden></div>';
+    el.innerHTML = svg;
+    var tip = el.querySelector(".tip"), hv = el.querySelector(".hv"), sv = el.querySelector("svg");
+    function mover(ev) {
+      var r = sv.getBoundingClientRect();
+      var px = (ev.clientX - r.left) * (W / r.width);
+      if (px < m.l || px > W - m.r) { sair(); return; }
+      var xv = xmin + (px - m.l) / iw * (xmax - xmin), best = 0, bd = 1e12;
+      xs.forEach(function (x, k) { var d = Math.abs(x - xv); if (d < bd) { bd = d; best = k; } });
+      hv.setAttribute("x1", X(xs[best])); hv.setAttribute("x2", X(xs[best])); hv.style.display = "";
+      var rows = cfg.series.map(function (s, i) {
+        return '<div><i style="background:' + COR[i] + '"></i>' + esc(s.name) + '<b class="' + cls(s.ys[best]) + '">' + brl(s.ys[best]) + "</b></div>";
+      }).join("");
+      tip.innerHTML = '<strong>' + esc(cfg.tipHead(xs[best])) + "</strong>" + rows;
+      tip.hidden = false;
+      var tw = tip.offsetWidth, left = X(xs[best]) * (r.width / W) + 12;
+      if (left + tw > r.width) left = X(xs[best]) * (r.width / W) - tw - 12;
+      tip.style.left = Math.max(4, left) + "px"; tip.style.top = "8px";
+    }
+    function sair() { tip.hidden = true; hv.style.display = "none"; }
+    sv.addEventListener("pointermove", mover);
+    sv.addEventListener("pointerleave", sair);
+  }
+
+  function barChart(el, res) {
+    var W = Math.max(280, el.clientWidth || 600), H = 290;
+    var m = { l: 52, r: 12, t: 22, b: 58 };
+    var iw = W - m.l - m.r, ih = H - m.t - m.b;
+    var ymax = 0;
+    res.forEach(function (r) { ymax = Math.max(ymax, r.recTot, r.custo); });
+    var sc = niceScale(0, ymax, 5);
+    function Y(y) { return m.t + ih - (y - sc.lo) / (sc.hi - sc.lo) * ih; }
+    var svg = '<svg viewBox="0 0 ' + W + " " + H + '" width="' + W + '" height="' + H + '" role="img" aria-label="Receita e custo por cenário">';
+    sc.ticks.forEach(function (t) {
+      svg += '<line class="gl' + (t === 0 ? " zero" : "") + '" x1="' + m.l + '" x2="' + (W - m.r) + '" y1="' + Y(t) + '" y2="' + Y(t) + '"/>';
+      svg += '<text class="tk" x="' + (m.l - 8) + '" y="' + (Y(t) + 4) + '" text-anchor="end">' + mil(t) + "</text>";
+    });
+    var gw = iw / 4, bw = Math.min(34, gw * 0.3);
+    res.forEach(function (r, i) {
+      var cx = m.l + gw * i + gw / 2;
+      svg += '<rect x="' + (cx - bw - 2) + '" y="' + Y(r.recTot) + '" width="' + bw + '" height="' + Math.max(0, Y(0) - Y(r.recTot)) + '" rx="2" fill="' + COR[i] + '"><title>Receita ' + brl(r.recTot) + "</title></rect>";
+      svg += '<rect x="' + (cx + 2) + '" y="' + Y(r.custo) + '" width="' + bw + '" height="' + Math.max(0, Y(0) - Y(r.custo)) + '" rx="2" fill="' + COR[i] + '" fill-opacity="0.32" stroke="' + COR[i] + '" stroke-width="1.4"><title>Custo ' + brl(r.custo) + "</title></rect>";
+      svg += '<text class="vl" x="' + (cx - bw / 2 - 2) + '" y="' + (Y(r.recTot) - 5) + '" text-anchor="middle">' + mil(r.recTot) + "</text>";
+      svg += '<text class="vl" x="' + (cx + bw / 2 + 2) + '" y="' + (Y(r.custo) - 5) + '" text-anchor="middle">' + mil(r.custo) + "</text>";
+      svg += '<text class="tk" x="' + cx + '" y="' + (H - m.b + 18) + '" text-anchor="middle">Cenário ' + (i + 1) + "</text>";
+      svg += '<text class="sb ' + cls(r.sobra) + '" x="' + cx + '" y="' + (H - m.b + 36) + '" text-anchor="middle">Sobra ' + mil(r.sobra) + "</text>";
+    });
+    svg += "</svg>";
+    el.innerHTML = svg;
+  }
+
+  /* ---------- saídas ---------- */
+  var ULT = [];
+  function out(key, txt) {
+    var els = document.querySelectorAll('[data-out="' + key + '"]');
+    for (var i = 0; i < els.length; i++) els[i].textContent = txt;
+  }
+
+  function linha(t, v) { return "<div><dt>" + t + "</dt><dd>" + v + "</dd></div>"; }
+  function bebBox(r, i) {
+    if (i < 2) {
+      return '<div class="bebbox"><h4>Bebida vendida à parte</h4><dl>' +
+        linha("Receita da bebida", brl(r.recBeb)) + linha("Custo da bebida", brl(r.beb)) +
+        linha("Lucro da bebida", '<span class="' + cls(r.lucroBeb) + '">' + brl(r.lucroBeb) + "</span>") +
+        linha("Margem líquida", pct(r.margBeb)) + "</dl>" +
+        '<p class="nt">Receita e custo totais já incluem a bebida.</p></div>';
+    }
+    var extra = r.barris > 0 ? '<p class="nt">Chopp: ' + r.barris + (r.barris === 1 ? " barril" : " barris") + " (" + Math.round(r.copos).toLocaleString("pt-BR") + " copos servidos).</p>" : "";
+    return '<div class="bebbox"><h4>Bebida incluída no ingresso</h4><dl>' +
+      linha("Custo da bebida", brl(r.beb)) + linha("Custo por pessoa", brl2(r.n > 0 ? r.beb / r.n : 0)) +
+      linha("Bebida no ingresso", pct(r.ing > 0 && r.n > 0 ? r.beb / r.n / r.ing : 0)) + "</dl>" + extra + "</div>";
+  }
+
+  function renderCards(res, melhor) {
+    var segs = [["alim", "Alimentos"], ["desc", "Descartáveis"], ["beb", "Bebidas"], ["buf", "Buffet"], ["ext", "Equipe e extras"]];
+    var h = "";
+    res.forEach(function (r, i) {
+      var c = CENARIOS[i];
+      var barra = segs.map(function (s) {
+        var w = r.custo > 0 ? r[s[0]] / r.custo * 100 : 0;
+        return w > 0 ? '<i class="k-' + s[0] + '" style="width:' + w.toFixed(2) + '%" title="' + s[1] + ": " + brl(r[s[0]]) + '"></i>' : "";
+      }).join("");
+      h += '<article class="card c' + (i + 1) + (i === melhor ? " best" : "") + '">' +
+        '<header><p class="cn">Cenário ' + (i + 1) + '</p><h3>' + esc(c.curto) + '</h3><p class="tag">' + esc(c.tag) + "</p></header>" +
+        '<div class="big"><span class="lbl">Resultado final</span><strong class="' + cls(r.sobra) + '">' + brl(r.sobra) + "</strong>" +
+        (i === melhor ? '<span class="chip">Maior resultado</span>' : "") + "</div>" +
+        '<dl class="comp"><div><dt>' + "Sobra da feijoada" + '</dt><dd class="' + cls(r.sobraSemBeb) + '">' + brl(r.sobraSemBeb) + "</dd></div>" +
+        "<div><dt>Lucro da bebida</dt><dd>" + (i < 2 ? '<span class="' + cls(r.lucroBeb) + '">' + brl(r.lucroBeb) + "</span>" : "-") + "</dd></div></dl>" +
+        '<dl><div><dt>Ingresso</dt><dd>' + brl2(r.ing) + "</dd></div>" +
+        "<div><dt>Receita total</dt><dd>" + brl(r.recTot) + "</dd></div>" +
+        "<div><dt>Custo total</dt><dd>" + brl(r.custo) + "</dd></div>" +
+        "<div><dt>Margem</dt><dd>" + pct(r.margem) + "</dd></div>" +
+        "<div><dt>Sobra por pessoa</dt><dd>" + brl2(r.sobraPP) + "</dd></div>" +
+        "<div><dt>Custo por pessoa</dt><dd>" + brl2(r.custoPP) + "</dd></div></dl>" +
+        '<div class="stack" role="img" aria-label="Composição do custo">' + barra + "</div>" +
+        bebBox(r, i) +
+        "</article>";
+    });
+    document.getElementById("cards").innerHTML = h;
+  }
+
+  function renderQuadro(res, melhor) {
+    var rows = [
+      ["Ingresso", "ing", brl2], ["Convidados", "n", function (v) { return v.toLocaleString("pt-BR"); }],
+      ["Receita com ingressos", "recIng", brl], ["Receita da bebida à parte", "recBeb", brl], ["RECEITA TOTAL", "recTot", brl, 1],
+      ["Alimentos, com folga", "alim", brl], ["Guardanapos e copos", "desc", brl], ["Bebidas (custo)", "beb", brl],
+      ["Buffet", "buf", brl], ["Equipe e extras", "ext", brl], ["CUSTO TOTAL", "custo", brl, 1],
+      ["Custo por pessoa (ingresso mínimo para empatar)", "custoPP", brl2],
+      ["Sobra da feijoada (ingressos menos custos, sem a bebida à parte)", "sobraSemBeb", brl],
+      ["Lucro da venda de bebida à parte", "lucroBeb", brl],
+      ["RESULTADO FINAL (sobra da feijoada + lucro da bebida)", "sobra", brl, 1],
+      ["Resultado por pessoa", "sobraPP", brl2], ["Margem sobre a receita", "margem", pct],
+      ["Diferença do resultado em relação ao Cenário 1", "dif", brl],
+      ["Margem líquida da bebida à parte", "margBeb", pct]
+    ];
+    var h = '<thead><tr><th scope="col">Indicador</th>' + res.map(function (r, i) {
+      return '<th scope="col" class="c' + (i + 1) + (i === melhor ? " best" : "") + '"><span class="dot"></span>Cenário ' + (i + 1) + "<small>" + esc(CENARIOS[i].curto) + "</small></th>";
+    }).join("") + "</tr></thead><tbody>";
+    rows.forEach(function (rw, k) {
+      if (k === 12) h += '<tr class="sep"><th colspan="5" scope="colgroup">Como chega ao resultado final</th></tr>';
+      if (k === 18) h += '<tr class="sep"><th colspan="5" scope="colgroup">Bebida vendida à parte (cenários 1 e 2)</th></tr>';
+      h += "<tr" + (rw[3] ? ' class="tot"' : "") + '><th scope="row">' + rw[0] + "</th>" + res.map(function (r, i) {
+        var v = rw[1] === "dif" ? (i === 0 ? 0 : r.sobra - res[0].sobra) : r[rw[1]];
+        if (rw[1] === "margBeb" && i > 1) return '<td class="r mut">n/a</td>';
+        if (rw[1] === "lucroBeb" && i > 1) return '<td class="r mut">-</td>';
+        var c = (rw[1] === "sobra" || rw[1] === "dif" || rw[1] === "lucroBeb" || rw[1] === "sobraSemBeb") ? cls(v) : "";
+        var txt = (v === 0 && ["recBeb", "alim", "desc", "buf", "ext", "dif"].indexOf(rw[1]) >= 0) ? "-" : rw[2](v);
+        return '<td class="r ' + c + '">' + txt + "</td>";
+      }).join("") + "</tr>";
+    });
+    document.getElementById("quadro").innerHTML = h + "</tbody>";
+  }
+
+  function renderCharts(res) {
+    var n = S.pessoas;
+    var xs = [];
+    for (var x = 40; x <= 250; x += 10) xs.push(x);
+    var xl = xs.slice();
+    if (xs.indexOf(n) < 0 && n >= 40 && n <= 250) { xs.push(n); xs.sort(function (a, b) { return a - b; }); }
+    var ser = CENARIOS.map(function (c, i) { return { name: "Cenário " + (i + 1), ys: [] }; });
+    xs.forEach(function (x) { calcCenarios(x, S).forEach(function (r, i) { ser[i].ys.push(r.sobra); }); });
+    var dotsB = [];
+    var idx = xs.indexOf(n);
+    if (idx >= 0) ser.forEach(function (s, i) { dotsB.push({ x: n, y: s.ys[idx], i: i }); });
+    lineChart(document.getElementById("chB"), {
+      xs: xs, xlab: xl, xfmt: function (v) { return v; }, xtitle: "Convidados", series: ser, markerX: n, dots: dotsB,
+      aria: "Sobra por número de convidados", tipHead: function (v) { return v + " convidados"; }
+    });
+    var ing = [];
+    for (var p = 30; p <= 110; p += 5) ing.push(p);
+    var ser2 = CENARIOS.map(function (c, i) { return { name: "Cenário " + (i + 1), ys: ing.map(function (g) { return g * n + res[i].recBeb - res[i].custo; }) }; });
+    var dotsC = res.map(function (r, i) { return { x: r.ing, y: r.sobra, i: i }; }).filter(function (d) { return ing.indexOf(d.x) >= 0 || (d.x >= 30 && d.x <= 110); });
+    lineChart(document.getElementById("chC"), {
+      xs: ing, xlab: ing, xfmt: function (v) { return "R$ " + v; }, xtitle: "Ingresso (mesmo valor nos quatro cenários, " + n + " convidados)", series: ser2, dots: dotsC,
+      aria: "Sobra por valor do ingresso", tipHead: function (v) { return "Ingresso de R$ " + v; }
+    });
+    barChart(document.getElementById("chA"), res);
+  }
+
+  function renderCompras(res) {
+    var cp = calcCompras(S.pessoas, S);
+    var grupos = [["Venda à parte (cen. 1 e 2)", 0, 0], ["Cenário 3 (chopp incluído)", 1, 2], ["Cenário 4 (cerveja incluída)", 2, 3]];
+    var h = '<thead><tr><th scope="col" rowspan="2">Bebida</th><th scope="col" rowspan="2">Embalagem</th>' +
+      grupos.map(function (g) { return '<th scope="colgroup" colspan="3" class="cc g' + g[1] + '">' + g[0] + "</th>"; }).join("") + "</tr><tr>" +
+      grupos.map(function () { return '<th scope="col" class="r">Porções</th><th scope="col" class="r">Embalagens</th><th scope="col" class="r">Custo</th>'; }).join("") + "</tr></thead><tbody>";
+    var tot = [0, 0, 0];
+    S.beb.forEach(function (b, j) {
+      h += "<tr><th scope='row'>" + esc(b.nome) + '</th><td class="c">' + esc(b.emb) + "</td>";
+      cp[j].forEach(function (c, k) {
+        tot[k] += c.custo;
+        h += '<td class="r">' + Math.round(c.por).toLocaleString("pt-BR") + '</td><td class="r">' + c.emb.toLocaleString("pt-BR") + " " + (c.emb === 1 ? esc(b.emb) : esc(plural(b.emb))) + '</td><td class="r">' + brl(c.custo) + "</td>";
+      });
+      h += "</tr>";
+    });
+    var sim = [res[0].beb, res[2].beb, res[3].beb];
+    h += '<tr class="tot"><th scope="row" colspan="2">Total comprando embalagem fechada</th>' + tot.map(function (t) { return '<td></td><td></td><td class="r">' + brl(t) + "</td>"; }).join("") + "</tr>" +
+      '<tr><th scope="row" colspan="2">Custo usado no simulador (proporcional)</th>' + sim.map(function (t) { return '<td></td><td></td><td class="r">' + brl(t) + "</td>"; }).join("") + "</tr>" +
+      '<tr><th scope="row" colspan="2">Diferença</th>' + sim.map(function (t, k) { return '<td></td><td></td><td class="r">' + brl(tot[k] - t) + "</td>"; }).join("") + "</tr></tbody>";
+    document.getElementById("compBeb").innerHTML = h;
+    document.getElementById("nPessoasBeb").textContent = S.pessoas.toLocaleString("pt-BR");
+  }
+
+  function renderOutros(res) {
+    var cb = copoPorBarril(S), n = S.pessoas;
+    out("copoBarril", num1(cb));
+    out("choppCusto", brl2(S.params.precoBarril / cb));
+    out("choppMl", S.params.mlCopo + " ml"); out("choppLit", num1(S.params.litrosBarril) + " L");
+    S.beb.forEach(function (b, j) {
+      out("lucro-" + j, b.venda > 0 ? brl2(b.venda - (j === 2 ? S.params.precoBarril / cb : b.custo)) : "n/a");
+      ["consA", "cons3", "cons4"].forEach(function (k) { out("cons-" + j + "-" + k, b[k].toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })); });
+    });
+    renderCompras(res);
+    var tot = [0, 0, 0, 0];
+    S.extras.forEach(function (e, k) {
+      out("ext-" + k, brl(e.qtd * e.valor));
+      e.flags.forEach(function (f, c) { tot[c] += e.qtd * e.valor * f; });
+    });
+    tot.forEach(function (t, c) { out("ext-tot-" + c, t === 0 ? "-" : brl(t)); });
+    var sub = 0;
+    S.alimentos.forEach(function (a, i) { var v = a.qtd * a.preco * n / 150; sub += v; out("al-" + i, brl2(v)); });
+    out("al-sub", brl(sub)); out("al-folga", brl(sub * S.params.folga)); out("al-tot", brl(sub * (1 + S.params.folga)));
+    S.desc.forEach(function (d, i) { out("ds-" + i, brl2(d.qtd * d.preco * n / 150)); });
+    var al = document.getElementById("alerta");
+    if (S.params.minBuffet > 0 && n < S.params.minBuffet) {
+      al.hidden = false;
+      al.textContent = "Atenção: o buffet cobra no mínimo " + S.params.minBuffet + " pessoas, mesmo com " + n + " ingressos vendidos.";
+    } else al.hidden = true;
+    document.getElementById("nPessoas").textContent = n.toLocaleString("pt-BR");
+  }
+
+  function renderAll() {
+    aplicaPrem(S);
+    var res = calcCenarios(S.pessoas, S);
+    var melhor = 0;
+    res.forEach(function (r, i) { if (r.sobra > res[melhor].sobra) melhor = i; });
+    ULT = res;
+    renderCards(res, melhor);
+    renderQuadro(res, melhor);
+    renderOutros(res);
+    renderCharts(res);
+  }
+
+  /* ---------- eventos ---------- */
+  document.addEventListener("input", function (ev) {
+    var el = ev.target;
+    var path = el.getAttribute && el.getAttribute("data-path");
+    if (!path) return;
+    var val;
+    if (el.type === "checkbox") val = el.checked ? 1 : 0;
+    else if (el.type === "number" || el.type === "range") {
+      val = parseFloat(el.value);
+      if (isNaN(val) || val < 0) val = 0;
+      var sc = parseFloat(el.getAttribute("data-scale") || "1");
+      val = val / sc;
+      if (path === "pessoas") val = Math.round(val);
+    } else val = el.value;
+    setPath(S, path, val);
+    if (path === "pessoas") {
+      var mir = document.querySelectorAll('[data-path="pessoas"]');
+      for (var i = 0; i < mir.length; i++) if (mir[i] !== el) mir[i].value = val;
+    }
+    save();
+    renderAll();
+  });
+
+  var rst = document.getElementById("btnReset"), rstTimer = null;
+  rst.addEventListener("click", function () {
+    if (rst.getAttribute("data-armed") !== "1") {
+      rst.setAttribute("data-armed", "1");
+      rst.textContent = "Confirmar restauração";
+      rstTimer = setTimeout(function () { rst.removeAttribute("data-armed"); rst.textContent = "Restaurar padrão"; }, 4000);
+      return;
+    }
+    clearTimeout(rstTimer);
+    rst.removeAttribute("data-armed");
+    rst.textContent = "Restaurar padrão";
+    S = defaults();
+    save();
+    buildStatic();
+    renderAll();
+    aviso("Valores restaurados ao padrão.");
+  });
+
+
+  /* ---------- tema claro e escuro (sol e lua) ---------- */
+  var THEME_KEY = "feijoada133_tema";
+  var SOL = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
+  var LUA = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
+  var btnTema = document.getElementById("btnTema");
+  function temaAtual() {
+    var t = document.documentElement.getAttribute("data-theme");
+    if (t === "dark" || t === "light") return t;
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  function pintaBotaoTema() {
+    var escuro = temaAtual() === "dark";
+    btnTema.innerHTML = escuro ? SOL : LUA;
+    btnTema.setAttribute("aria-label", escuro ? "Mudar para o tema claro" : "Mudar para o tema escuro");
+    btnTema.title = escuro ? "Tema claro" : "Tema escuro";
+  }
+  try {
+    var guardado = localStorage.getItem(THEME_KEY);
+    if (guardado === "dark" || guardado === "light") document.documentElement.setAttribute("data-theme", guardado);
+  } catch (e) { }
+  pintaBotaoTema();
+  btnTema.addEventListener("click", function () {
+    var novo = temaAtual() === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", novo);
+    try { localStorage.setItem(THEME_KEY, novo); } catch (e) { }
+    pintaBotaoTema();
+  });
+  if (window.matchMedia) {
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+    var onMq = function () { pintaBotaoTema(); };
+    if (mq.addEventListener) mq.addEventListener("change", onMq); else if (mq.addListener) mq.addListener(onMq);
+  }
+  if (typeof ESTADO_CARIMBO !== "undefined" && ESTADO_CARIMBO) {
+    var ge = document.getElementById("geradoEm");
+    if (ge) ge.textContent = "Valores lidos da planilha em " + ESTADO_CARIMBO + ".";
+  }
+
+  function aviso(t) {
+    var s = document.getElementById("aviso");
+    s.textContent = t;
+    s.classList.add("on");
+    setTimeout(function () { s.classList.remove("on"); }, 3200);
+  }
+
+  document.getElementById("btnCopiar").addEventListener("click", function () {
+    var res = ULT, L = [];
+    L.push("Feijoada Beneficente 2026, Loja Ordem e Progresso nº 133");
+    L.push("Simulação para " + S.pessoas + " convidados");
+    L.push("");
+    res.forEach(function (r, i) {
+      L.push(CENARIOS[i].nome + ": ingresso " + brl2(r.ing) + ", receita " + brl(r.recTot) + ", custo " + brl(r.custo) + ", sobra da feijoada " + brl(r.sobraSemBeb) + (i < 2 ? ", lucro da bebida " + brl(r.lucroBeb) : "") + ", resultado final " + brl(r.sobra) + ".");
+    });
+    var best = 0;
+    res.forEach(function (r, i) { if (r.sobra > res[best].sobra) best = i; });
+    L.push("");
+    L.push("Maior resultado final: cenário " + (best + 1) + ", " + CENARIOS[best].curto + ".");
+    L.push("Valores estimados, sujeitos à cotação final.");
+    var texto = L.join("\n");
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = texto; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (e) { }
+      document.body.removeChild(ta);
+      aviso(ok ? "Resumo copiado." : "Não foi possível copiar neste navegador.");
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(texto).then(function () { aviso("Resumo copiado."); }, fallback);
+    } else fallback();
+  });
+
+  var rz;
+  window.addEventListener("resize", function () { clearTimeout(rz); rz = setTimeout(function () { renderCharts(ULT); }, 120); });
+
+  buildStatic();
+  renderAll();
+})();
+
+</script>
+
+</body>
+</html>
